@@ -212,8 +212,6 @@ export default function CVPreview() {
             </div>
           </div>
         )}
-      </div>
-      
       {/* Zoomed out wrapper for better fit */}
       <div className="w-full flex justify-center pb-24 px-2 lg:px-4 pt-2">
         <div className={`w-[210mm] min-h-[297mm] transform scale-[0.45] sm:scale-[0.75] md:scale-[0.95] lg:scale-[0.60] xl:scale-[0.80] 2xl:scale-[0.95] origin-top shadow-2xl transition-all duration-500 rounded-lg overflow-hidden border border-slate-200 bg-white flex-shrink-0 ${isCompactMode ? 'cv-compact-preview' : ''}`}>
