@@ -24,7 +24,7 @@ export default function ModernTemplate() {
         {/* Profile Photo */}
         <div className="w-32 h-32 rounded-full bg-slate-600 border-4 border-slate-500 mx-auto mb-6 flex items-center justify-center overflow-hidden">
           {profilePhoto ? (
-            <img src={profilePhoto} alt={fullName || 'Profile'} className="w-full h-full object-cover" />
+            <img src={profilePhoto} alt={fullName || 'Profile'} className="w-full h-full object-cover object-top" />
           ) : (
             <User size={64} className="text-slate-400" />
           )}

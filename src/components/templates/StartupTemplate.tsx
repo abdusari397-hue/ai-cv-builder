@@ -35,7 +35,7 @@ export default function StartupTemplate() {
         </div>
         {profilePhoto && (
           <div className="w-24 h-24 shrink-0 rounded-lg overflow-hidden border border-neutral-700 ml-6 rtl:mr-6 rtl:ml-0 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-            <img src={profilePhoto} alt={fullName} className="w-full h-full object-cover" />
+            <img src={profilePhoto} alt={fullName} className="w-full h-full object-cover object-top" />
           </div>
         )}
       </header>

@@ -38,7 +38,7 @@ export default function CreativeTemplate() {
         <div className="relative z-10 flex items-center gap-8">
           {profilePhoto && (
             <div className="w-32 h-32 rounded-3xl overflow-hidden shrink-0 border-4 border-white/20 shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-300">
-              <img src={profilePhoto} alt={fullName} className="w-full h-full object-cover" />
+              <img src={profilePhoto} alt={fullName} className="w-full h-full object-cover object-top" />
             </div>
           )}
           <div className="text-white flex-1">

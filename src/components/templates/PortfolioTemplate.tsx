@@ -30,7 +30,7 @@ export default function PortfolioTemplate() {
       <aside className="w-[32%] bg-[#22223b] p-8 text-white">
         {profilePhoto && (
           <div className="mb-7 h-32 w-32 overflow-hidden rounded-full border-4 border-white/15">
-            <img src={profilePhoto} alt={fullName} className="h-full w-full object-cover" />
+            <img src={profilePhoto} alt={fullName} className="h-full w-full object-cover object-top" />
           </div>
         )}
         <h1 className="text-3xl font-black leading-tight">{fullName || t.fullName}</h1>

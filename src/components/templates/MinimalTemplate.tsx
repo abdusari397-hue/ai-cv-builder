@@ -23,7 +23,7 @@ export default function MinimalTemplate() {
       <header className="flex items-center gap-8 border-b-4 border-indigo-600 pb-8">
         {profilePhoto && (
           <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0 shadow-lg">
-            <img src={profilePhoto} alt={fullName} className="w-full h-full object-cover" />
+            <img src={profilePhoto} alt={fullName} className="w-full h-full object-cover object-top" />
           </div>
         )}
         <div className="flex-1">

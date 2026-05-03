@@ -27,7 +27,7 @@ export default function ExecutiveTemplate() {
         </div>
         {profilePhoto && (
           <div className="w-28 h-28 rounded-full overflow-hidden shrink-0 border-2 border-slate-500 shadow-xl ml-8 rtl:mr-8 rtl:ml-0">
-            <img src={profilePhoto} alt={fullName} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+            <img src={profilePhoto} alt={fullName} className="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-500" />
           </div>
         )}
       </header>

@@ -23,7 +23,7 @@ export default function ElegantTemplate() {
       <header className="flex flex-col items-center text-center mb-10">
         {profilePhoto && (
           <div className="w-24 h-24 shrink-0 rounded-full overflow-hidden mb-6 border border-slate-200 shadow-sm">
-            <img src={profilePhoto} alt={fullName} className="w-full h-full object-cover grayscale" />
+            <img src={profilePhoto} alt={fullName} className="w-full h-full object-cover object-top grayscale" />
           </div>
         )}
         <h1 className="text-4xl font-normal tracking-widest uppercase text-slate-900 mb-2">{fullName || t.fullName}</h1>
