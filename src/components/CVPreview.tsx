@@ -59,9 +59,10 @@ export default function CVPreview() {
 
     // We create a wrapper to hold the clone and apply compact mode class if needed
     const wrapper = document.createElement('div');
-    wrapper.style.position = 'absolute';
-    wrapper.style.left = '-10000px';
+    wrapper.style.position = 'fixed';
+    wrapper.style.left = '0';
     wrapper.style.top = '0';
+    wrapper.style.zIndex = '-9999';
     wrapper.style.width = '210mm';
     wrapper.style.visibility = 'hidden'; // Hide during probe
 
@@ -125,11 +126,29 @@ export default function CVPreview() {
           useCORS: true, 
           allowTaint: true,
           scrollY: 0,
+          windowWidth: 794,
         },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
-      await html2pdf().set(opt).from(clone).save();
+      // Create PDF and get Blob to handle Android download securely
+      const pdfBlob = await html2pdf().set(opt).from(clone).output('blob');
+      
+      // Create a URL for the blob
+      const blobUrl = URL.createObjectURL(pdfBlob);
+      
+      // Create a temporary anchor element and trigger download
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      
+      // Clean up
+      setTimeout(() => {
+        document.body.removeChild(link);
+        URL.revokeObjectURL(blobUrl);
+      }, 100);
 
       // Clean up the DOM
       document.body.removeChild(wrapper);
