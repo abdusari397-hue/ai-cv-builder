@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-inter: var(--font-inter), sans-serif;
+  --font-cairo: var(--font-cairo), sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#cv-print-clone {
+  display: none;
+}
+
+.cv-compact-preview #cv-print-area,
+#cv-print-clone.cv-compact-print {
+  font-size: 92%;
+}
+
+.cv-compact-preview #cv-print-area header,
+#cv-print-clone.cv-compact-print header {
+  padding-top: 1.35rem !important;
+  padding-bottom: 1.35rem !important;
+}
+
+.cv-compact-preview #cv-print-area section,
+.cv-compact-preview #cv-print-area article,
+#cv-print-clone.cv-compact-print section,
+#cv-print-clone.cv-compact-print article {
+  margin-top: 0.65rem !important;
+  margin-bottom: 0.65rem !important;
+}
+
+.cv-compact-preview #cv-print-area [class*=" p-"],
+.cv-compact-preview #cv-print-area [class^="p-"],
+#cv-print-clone.cv-compact-print [class*=" p-"],
+#cv-print-clone.cv-compact-print [class^="p-"] {
+  padding: 0.75rem !important;
+}
+
+.cv-compact-preview #cv-print-area [class*="space-y-"] > :not([hidden]) ~ :not([hidden]),
+#cv-print-clone.cv-compact-print [class*="space-y-"] > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.6rem !important;
+}
+
+.cv-compact-preview #cv-print-area p,
+.cv-compact-preview #cv-print-area li,
+#cv-print-clone.cv-compact-print p,
+#cv-print-clone.cv-compact-print li {
+  line-height: 1.35 !important;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  html,
+  body {
+    background: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 210mm !important;
+    min-height: 297mm !important;
+  }
+
+  body > *:not(#cv-print-clone) {
+    display: none !important;
+  }
+
+  #cv-print-clone {
+    display: flex !important;
+    position: static !important;
+    width: calc(210mm / var(--print-scale, 1)) !important;
+    min-height: calc(297mm / var(--print-scale, 1)) !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    zoom: var(--print-scale, 1);
+  }
+
+  #cv-print-clone,
+  #cv-print-clone * {
+    visibility: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+}
