@@ -130,8 +130,8 @@ export default function CVPreview() {
   };
 
   return (
-    <div className="w-full h-full overflow-y-auto custom-scrollbar p-6">
-      <div className="flex flex-col gap-4 mb-6">
+    <div className="w-full h-full overflow-y-auto custom-scrollbar relative">
+      <div className="sticky top-0 z-40 flex flex-col gap-4 mb-8 bg-slate-100/90 lg:bg-white/90 backdrop-blur-md px-6 py-4 border-b border-slate-200/60 shadow-[0_4px_30px_rgba(0,0,0,0.03)]">
         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <Eye size={20} className="text-indigo-600" />
           {t.livePreview}
@@ -219,7 +219,7 @@ export default function CVPreview() {
       </div>
       
       {/* Zoomed out wrapper for better fit */}
-      <div className="w-full flex justify-center pb-20">
+      <div className="w-full flex justify-center pb-24 px-6 pt-2">
         <div className={`w-[210mm] min-h-[297mm] transform scale-[0.40] sm:scale-[0.7] md:scale-[0.9] lg:scale-[0.55] xl:scale-[0.75] 2xl:scale-[0.9] origin-top shadow-2xl transition-all duration-500 rounded-lg overflow-hidden border border-slate-200 bg-white flex-shrink-0 ${isCompactMode ? 'cv-compact-preview' : ''}`}>
           {templateId === 'modern' && <ModernTemplate />}
           {templateId === 'classic' && <ClassicTemplate />}
