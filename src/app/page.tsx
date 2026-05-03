@@ -171,10 +171,21 @@ export default function Home() {
   if (!hasHydrated) return null;
 
   return (
-    <main className={`flex min-h-screen bg-slate-50 w-full ${language === 'ar' ? 'font-cairo' : 'font-inter'}`} dir={language === 'ar' ? 'rtl' : 'ltr'}>
-      {/* Left Form Area */}
-      <div className="w-full lg:w-1/2 p-6 md:p-10 lg:px-10 overflow-y-auto">
-        <header className={`mb-10 text-center ${language === 'ar' ? 'lg:text-right' : 'lg:text-left'}`}>
+    <main className={`flex h-[100dvh] bg-slate-50 w-full overflow-hidden ${language === 'ar' ? 'font-cairo' : 'font-inter'}`} dir={language === 'ar' ? 'rtl' : 'ltr'}>
+      <div className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        
+        {/* Left Form Area */}
+        <div id="form-area" className="w-full shrink-0 snap-center lg:w-1/2 h-full overflow-y-auto p-6 md:p-10 lg:px-10 pb-24 relative">
+          
+          {/* Mobile Swipe Indicator */}
+          <div className="lg:hidden absolute bottom-6 left-0 right-0 flex justify-center pointer-events-none sticky-bottom z-50">
+            <div className="bg-slate-900/80 backdrop-blur text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 shadow-lg animate-bounce">
+              <span>{language === 'ar' ? 'اسحب للمعاينة' : 'Swipe for preview'}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={language === 'ar' ? 'rotate-180' : ''}><path d="m9 18 6-6-6-6"/></svg>
+            </div>
+          </div>
+
+          <header className={`mb-10 text-center ${language === 'ar' ? 'lg:text-right' : 'lg:text-left'}`}>
           <div className="flex justify-between items-start mb-6">
             <div className="inline-flex items-center justify-center p-3 bg-indigo-100 rounded-full">
               <Sparkles className="text-indigo-600" size={32} />
@@ -375,10 +386,18 @@ export default function Home() {
         </footer>
       </div>
 
-      {/* Right Preview Area — sticky */}
-      <div className="hidden lg:block lg:w-1/2 h-screen sticky top-0 overflow-y-auto bg-white border-s border-slate-200">
+      {/* Right Preview Area */}
+      <div id="preview-area" className="w-full shrink-0 snap-center lg:w-1/2 h-full overflow-y-auto bg-slate-200 lg:bg-white border-s border-slate-200 relative pb-20 lg:pb-0">
+          {/* Mobile Swipe Indicator (Back) */}
+          <div className="lg:hidden absolute bottom-6 left-0 right-0 flex justify-center pointer-events-none sticky-bottom z-50">
+            <div className="bg-indigo-600/90 backdrop-blur text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 shadow-lg">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={language === 'ar' ? '' : 'rotate-180'}><path d="m15 18-6-6 6-6"/></svg>
+              <span>{language === 'ar' ? 'اسحب للتعديل' : 'Swipe to edit'}</span>
+            </div>
+          </div>
         <CVPreview />
       </div>
+    </div>
 
       {/* Modal */}
       <CVReviewModal
