@@ -14,8 +14,16 @@ export const generateImprovementPrompt = (params: ImproveRequestParams): string 
   const { content, section, jobTitle = 'غير محدد', language = 'ar' } = params;
   const langStr = language === 'ar' ? 'Arabic' : language === 'nl' ? 'Dutch' : 'English';
 
+  const taskDescription = content && content.trim() !== ''
+    ? `Your task is to improve the user's input for the "${section}" section of their CV.`
+    : `Your task is to generate a completely new professional text for the "${section}" section of their CV from scratch, tailored perfectly to the Target Job Title.`;
+
+  const inputSection = content && content.trim() !== ''
+    ? `\nUser's Input:\n"""\n${content}\n"""\n`
+    : `\nUser's Input: (None. Generate from scratch based on job title)\n`;
+
   const basePrompt = `You are an expert Resume/CV writer and career coach.
-Your task is to improve the user's input for the "${section}" section of their CV.
+${taskDescription}
 Target Job Title: "${jobTitle}"
 Output Language: ${langStr}
 
@@ -37,16 +45,10 @@ IMPORTANT RULES:
   ]
 }
 - Do not include any explanations, greetings, or other text outside the JSON object.
-- CRITICAL: The output MUST be strictly in the requested Output Language (${language === 'ar' ? 'Arabic' : language === 'nl' ? 'Dutch' : 'English'}).
-- Even if the "User's Input" is in a different language, you MUST translate and generate the professional content ONLY in ${language === 'ar' ? 'Arabic' : language === 'nl' ? 'Dutch' : 'English'}.
-- For "experience", generate 3-5 separate achievement bullet points. Each bullet must be on its OWN LINE separated by a newline character (\n). Do NOT use bullet symbols (•, -, *). Use strong action verbs (e.g., Developed, Led, حقق, طوّر).
-- For "summary", generate 2-4 impactful sentences. Each sentence must be on its OWN LINE separated by a newline character (\n). Make the sentences cohesive but individually meaningful.
-
-User's Input:
-"""
-${content}
-"""
-`;
+- CRITICAL: The output MUST be strictly in the requested Output Language (${langStr}).
+- Even if the "User's Input" is in a different language, you MUST translate and generate the professional content ONLY in ${langStr}.
+- For "experience", generate 3-5 separate achievement bullet points. Each bullet must be on its OWN LINE separated by a newline character (\\n). Do NOT use bullet symbols (•, -, *). Use strong action verbs (e.g., Developed, Led, حقق, طوّر).
+- For "summary", generate 2-4 impactful sentences. Each sentence must be on its OWN LINE separated by a newline character (\\n). Make the sentences cohesive but individually meaningful.${inputSection}`;
 
   return basePrompt.trim();
 };

@@ -18,7 +18,7 @@ export default function SummaryField() {
           onChange={(e) => setSummary(e.target.value)}
           placeholder={placeholders.summary}
           rows={5}
-          className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none text-slate-900 leading-relaxed"
+          className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none text-slate-900 leading-relaxed placeholder:text-slate-400"
           dir={language === 'ar' ? 'rtl' : 'ltr'}
         />
 

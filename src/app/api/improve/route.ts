@@ -31,8 +31,8 @@ export async function POST(req: NextRequest) {
 
     const body: ImproveRequestParams = await req.json();
 
-    if (!body.content || !body.section) {
-      return NextResponse.json({ error: 'Missing required fields: content or section' }, { status: 400 });
+    if (!body.section) {
+      return NextResponse.json({ error: 'Missing required field: section' }, { status: 400 });
     }
 
     const prompt = generateImprovementPrompt(body);

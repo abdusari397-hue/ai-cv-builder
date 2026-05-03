@@ -34,8 +34,6 @@ export default function AIAssistant({ currentText, section, jobTitle, onSelect }
   };
 
   const handleImprove = async () => {
-    if (!currentText.trim()) return;
-
     setIsOpen(true);
     setIsLoading(true);
     setError('');
@@ -70,11 +68,10 @@ export default function AIAssistant({ currentText, section, jobTitle, onSelect }
     return (
       <button
         onClick={handleImprove}
-        disabled={!currentText.trim()}
-        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm"
       >
         <Sparkles size={16} />
-        {t.aiImprove}
+        {currentText.trim() ? t.aiImprove : (language === 'ar' ? 'توليد بالذكاء الاصطناعي' : language === 'nl' ? 'Genereren met AI' : 'Generate with AI')}
       </button>
     );
   }
