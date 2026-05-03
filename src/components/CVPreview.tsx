@@ -131,63 +131,59 @@ export default function CVPreview() {
 
   return (
     <div className="w-full h-full overflow-y-auto custom-scrollbar relative">
-      <div className="sticky top-0 z-40 flex flex-col gap-4 mb-8 bg-slate-100/90 lg:bg-white/90 backdrop-blur-md px-6 py-4 border-b border-slate-200/60 shadow-[0_4px_30px_rgba(0,0,0,0.03)]">
-        <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-          <Eye size={20} className="text-indigo-600" />
-          {t.livePreview}
-        </h2>
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex-1">
-            <div className="flex flex-col gap-1.5 w-full max-w-[240px]">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">{t.changeTemplate || 'Change Template'}</label>
-              <div className="relative">
-                <select
-                  value={templateId}
-                  onChange={(e) => setTemplateId(e.target.value)}
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 pr-8 text-sm font-bold text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm cursor-pointer appearance-none transition-all"
-                  dir={language === 'ar' ? 'rtl' : 'ltr'}
-                >
-                  {categories.filter(c => c.id !== 'all').map(category => (
-                    <optgroup key={category.id} label={category.label}>
-                      {templates.filter(temp => temp.category === category.id).map(template => (
-                        <option key={template.id} value={template.id}>
-                          {template.label}
-                        </option>
-                      ))}
-                    </optgroup>
-                  ))}
-                </select>
-                <div className={`absolute inset-y-0 ${language === 'ar' ? 'left-0 pl-2' : 'right-0 pr-2'} flex items-center pointer-events-none`}>
-                  <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                </div>
+      <div className="sticky top-0 z-40 flex items-end justify-between gap-3 mb-6 bg-slate-100/90 lg:bg-white/90 backdrop-blur-md px-4 py-3 border-b border-slate-200/60 shadow-[0_4px_30px_rgba(0,0,0,0.03)]">
+        
+        {/* Template Switcher */}
+        <div className="flex-1 max-w-[200px]">
+          <div className="flex flex-col gap-1 w-full">
+            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider pl-1">{t.changeTemplate || 'Change Template'}</label>
+            <div className="relative">
+              <select
+                value={templateId}
+                onChange={(e) => setTemplateId(e.target.value)}
+                className="w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 pr-8 text-sm font-bold text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm cursor-pointer appearance-none transition-all"
+                dir={language === 'ar' ? 'rtl' : 'ltr'}
+              >
+                {categories.filter(c => c.id !== 'all').map(category => (
+                  <optgroup key={category.id} label={category.label}>
+                    {templates.filter(temp => temp.category === category.id).map(template => (
+                      <option key={template.id} value={template.id}>
+                        {template.label}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+              <div className={`absolute inset-y-0 ${language === 'ar' ? 'left-0 pl-2' : 'right-0 pr-2'} flex items-center pointer-events-none`}>
+                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
               </div>
             </div>
           </div>
-
-          <div className="flex shrink-0 flex-col gap-2">
-            <label className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 shadow-sm">
-              <span>{t.compactMode}</span>
-              <input
-                type="checkbox"
-                checked={isCompactMode}
-                onChange={(event) => setIsCompactMode(event.target.checked)}
-                className="h-4 w-4 accent-indigo-600"
-              />
-            </label>
-            <button
-              onClick={handleDownloadPDF}
-              disabled={isGenerating}
-              className="flex items-center justify-center gap-2 px-4 py-2 bg-slate-900 text-white text-sm font-bold rounded-lg hover:bg-black transition-all shadow-md disabled:opacity-70 active:scale-95"
-            >
-              {isGenerating ? (
-                <Loader2 size={16} className="animate-spin" />
-              ) : (
-                <Download size={16} />
-              )}
-              {t.downloadPDF}
-            </button>
-          </div>
         </div>
+
+        {/* Action Buttons */}
+        <div className="flex shrink-0 items-center gap-2">
+          <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 shadow-sm cursor-pointer hover:bg-slate-50">
+            <span className="hidden sm:inline">{t.compactMode}</span>
+            <span className="sm:hidden text-[10px]">Compact</span>
+            <input
+              type="checkbox"
+              checked={isCompactMode}
+              onChange={(event) => setIsCompactMode(event.target.checked)}
+              className="h-3.5 w-3.5 accent-indigo-600 cursor-pointer"
+            />
+          </label>
+          <button
+            onClick={handleDownloadPDF}
+            disabled={isGenerating}
+            className="flex items-center justify-center gap-2 px-3 py-1.5 bg-slate-900 text-white text-sm font-bold rounded-lg hover:bg-black transition-all shadow-md disabled:opacity-70 active:scale-95"
+          >
+            {isGenerating ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
+            <span className="hidden sm:inline">{t.downloadPDF}</span>
+            <span className="sm:hidden text-xs">PDF</span>
+          </button>
+        </div>
+      </div>
         {pageWarning && (
           <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
             <AlertTriangle size={18} className="mt-0.5 shrink-0" />
@@ -219,8 +215,8 @@ export default function CVPreview() {
       </div>
       
       {/* Zoomed out wrapper for better fit */}
-      <div className="w-full flex justify-center pb-24 px-6 pt-2">
-        <div className={`w-[210mm] min-h-[297mm] transform scale-[0.40] sm:scale-[0.7] md:scale-[0.9] lg:scale-[0.55] xl:scale-[0.75] 2xl:scale-[0.9] origin-top shadow-2xl transition-all duration-500 rounded-lg overflow-hidden border border-slate-200 bg-white flex-shrink-0 ${isCompactMode ? 'cv-compact-preview' : ''}`}>
+      <div className="w-full flex justify-center pb-24 px-2 lg:px-4 pt-2">
+        <div className={`w-[210mm] min-h-[297mm] transform scale-[0.45] sm:scale-[0.75] md:scale-[0.95] lg:scale-[0.60] xl:scale-[0.80] 2xl:scale-[0.95] origin-top shadow-2xl transition-all duration-500 rounded-lg overflow-hidden border border-slate-200 bg-white flex-shrink-0 ${isCompactMode ? 'cv-compact-preview' : ''}`}>
           {templateId === 'modern' && <ModernTemplate />}
           {templateId === 'classic' && <ClassicTemplate />}
           {templateId === 'minimal' && <MinimalTemplate />}
