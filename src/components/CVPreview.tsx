@@ -53,26 +53,29 @@ export default function CVPreview() {
     ? templates
     : templates.filter((template) => template.category === activeCategory);
 
-  const preparePrintClone = () => {
+  const checkPages = () => {
     const element = document.getElementById('cv-print-area');
     if (!element) return null;
 
-    const existingClone = document.getElementById('cv-print-clone');
-    existingClone?.remove();
+    // We create a wrapper to hold the clone and apply compact mode class if needed
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'absolute';
+    wrapper.style.left = '-10000px';
+    wrapper.style.top = '0';
+    wrapper.style.width = '210mm';
+    wrapper.style.visibility = 'hidden'; // Hide during probe
+
+    if (isCompactMode) {
+      wrapper.classList.add('cv-compact-preview');
+    }
 
     const clone = element.cloneNode(true) as HTMLElement;
-    clone.id = 'cv-print-clone';
-    clone.classList.toggle('cv-compact-print', isCompactMode);
-    clone.style.display = 'flex';
-    clone.style.position = 'fixed';
-    clone.style.left = '-10000px';
-    clone.style.top = '0';
-    clone.style.width = '210mm';
-    clone.style.minHeight = '297mm';
-    clone.style.visibility = 'hidden';
-    clone.style.transform = 'none';
-    document.body.appendChild(clone);
+    clone.style.transform = 'none'; // Ensure no scaling for accurate measurement
+    clone.style.boxShadow = 'none';
+    wrapper.appendChild(clone);
+    document.body.appendChild(wrapper);
 
+    // Use a probe to accurately measure 1 A4 page height in the current DOM
     const a4Probe = document.createElement('div');
     a4Probe.style.position = 'fixed';
     a4Probe.style.width = '210mm';
@@ -82,46 +85,54 @@ export default function CVPreview() {
     document.body.appendChild(a4Probe);
 
     const rawPages = Math.max(1, Math.ceil(clone.scrollHeight / a4Probe.offsetHeight));
-    const widthScale = a4Probe.offsetWidth / clone.scrollWidth;
-    const heightScale = a4Probe.offsetHeight / clone.scrollHeight;
-    const printScale = Math.min(1, widthScale, heightScale) * 0.94;
-    clone.style.setProperty('--print-scale', String(Math.max(0.58, printScale)));
-    clone.style.removeProperty('display');
-    clone.style.removeProperty('position');
-    clone.style.removeProperty('left');
-    clone.style.removeProperty('top');
-    clone.style.removeProperty('visibility');
-    a4Probe.remove();
-
-    return { clone, rawPages, scale: printScale };
+    
+    document.body.removeChild(a4Probe);
+    
+    return { wrapper, clone, rawPages };
   };
 
   const handleDownloadPDF = async () => {
     setIsGenerating(true);
     try {
-      const prepared = preparePrintClone();
+      const prepared = checkPages();
       if (!prepared) return;
 
-      const { clone, rawPages, scale } = prepared;
+      const { wrapper, clone, rawPages } = prepared;
+
+      // Check if it overflows and we are not in compact mode
       if (rawPages > 1 && !isCompactMode) {
-        clone.remove();
-        setPageWarning({ pages: rawPages, scale });
+        document.body.removeChild(wrapper);
+        setPageWarning({ pages: rawPages, scale: 1 });
         return;
       }
 
-      // Set document.title temporarily so the PDF filename matches the language
-      const cvLabel = language === 'nl' ? 'CV' : 'السيرة الذاتية';
-      const originalTitle = document.title;
-      document.title = fullName ? `${fullName} - ${cvLabel}` : cvLabel;
+      // Important: html2canvas needs the element to be visible to render it properly!
+      // We keep it off-screen (left: -10000px) but make it visible.
+      wrapper.style.visibility = 'visible';
 
-      const cleanup = () => {
-        document.title = originalTitle;
-        clone.remove();
-        window.removeEventListener('afterprint', cleanup);
+      // Dynamically import html2pdf.js to avoid SSR issues
+      const html2pdf = (await import('html2pdf.js')).default;
+
+      const cvLabel = language === 'nl' ? 'CV' : 'السيرة الذاتية';
+      const filename = fullName ? `${fullName} - ${cvLabel}.pdf` : `${cvLabel}.pdf`;
+
+      const opt = {
+        margin:       0,
+        filename:     filename,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { 
+          scale: 2, 
+          useCORS: true, 
+          allowTaint: true,
+          scrollY: 0,
+        },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
-      window.addEventListener('afterprint', cleanup);
-      window.print();
+      await html2pdf().set(opt).from(clone).save();
+
+      // Clean up the DOM
+      document.body.removeChild(wrapper);
     } catch (error) {
       console.error('PDF Generation Error:', error);
     } finally {
@@ -130,7 +141,7 @@ export default function CVPreview() {
   };
 
   return (
-    <div className="w-full h-full overflow-y-auto custom-scrollbar relative">
+    <div className="w-full relative">
       <div className="sticky top-0 z-40 flex items-end justify-between gap-3 mb-6 bg-slate-100/90 lg:bg-white/90 backdrop-blur-md px-4 py-3 border-b border-slate-200/60 shadow-[0_4px_30px_rgba(0,0,0,0.03)]">
         
         {/* Template Switcher */}
