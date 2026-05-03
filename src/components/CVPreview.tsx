@@ -94,55 +94,35 @@ export default function CVPreview() {
   };
 
   const handleDownloadPDF = async () => {
-    setIsGenerating(true);
-    try {
-      const prepared = checkPages();
-      if (!prepared) return;
+    const prepared = checkPages();
+    if (!prepared) return;
 
-      const { rawPages } = prepared;
-
-      // Check if it overflows and we are not in compact mode
-      if (rawPages > 1 && !isCompactMode) {
-        setPageWarning({ pages: rawPages, scale: 1 });
-        return;
-      }
-
-      const element = document.getElementById('cv-print-area');
-      if (!element) return;
-
-      // Dynamically import html2pdf.js to avoid SSR issues
-      const html2pdf = (await import('html2pdf.js')).default;
-
-      const cvLabel = language === 'nl' ? 'CV' : 'السيرة الذاتية';
-      const filename = fullName ? `${fullName} - ${cvLabel}.pdf` : `${cvLabel}.pdf`;
-
-      const opt: any = {
-        margin:       0,
-        filename:     filename,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { 
-          scale: 2, 
-          useCORS: true, 
-          allowTaint: true,
-          scrollY: 0,
-          windowWidth: 794, // A4 width in pixels
-        },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      // html2pdf clones the element automatically and safely renders it
-      await html2pdf().set(opt).from(element).save();
-
-    } catch (error) {
-      console.error('PDF Generation Error:', error);
-    } finally {
-      setIsGenerating(false);
+    // Check if it overflows and we are not in compact mode
+    if (prepared.rawPages > 1 && !isCompactMode) {
+      setPageWarning({ pages: prepared.rawPages, scale: 1 });
+      return;
     }
+
+    // Set document.title temporarily so the PDF filename matches the language
+    const cvLabel = language === 'nl' ? 'CV' : 'السيرة الذاتية';
+    const originalTitle = document.title;
+    document.title = fullName ? `${fullName} - ${cvLabel}` : cvLabel;
+
+    const cleanup = () => {
+      document.title = originalTitle;
+      window.removeEventListener('afterprint', cleanup);
+    };
+
+    window.addEventListener('afterprint', cleanup);
+    
+    // Trigger native print!
+    // We rely entirely on Tailwind's print:* classes to format it
+    window.print();
   };
 
   return (
-    <div className="w-full relative">
-      <div className="sticky top-0 z-40 flex items-end justify-between gap-3 mb-6 bg-slate-100/90 lg:bg-white/90 backdrop-blur-md px-4 py-3 border-b border-slate-200/60 shadow-[0_4px_30px_rgba(0,0,0,0.03)]">
+    <div className="w-full relative print:block print:w-[210mm] print:h-auto print:overflow-visible">
+      <div className="sticky top-0 z-40 flex items-end justify-between gap-3 mb-6 bg-slate-100/90 lg:bg-white/90 backdrop-blur-md px-4 py-3 border-b border-slate-200/60 shadow-[0_4px_30px_rgba(0,0,0,0.03)] print:hidden">
         
         {/* Template Switcher */}
         <div className="flex-1 max-w-[200px]">
@@ -224,8 +204,8 @@ export default function CVPreview() {
           </div>
         )}
       {/* Zoomed out wrapper for better fit */}
-      <div className="w-full flex justify-center pb-24 px-2 lg:px-4 pt-2">
-        <div className={`w-[210mm] min-h-[297mm] transform scale-[0.45] sm:scale-[0.75] md:scale-[0.95] lg:scale-[0.60] xl:scale-[0.80] 2xl:scale-[0.95] origin-top shadow-2xl transition-all duration-500 rounded-lg overflow-hidden border border-slate-200 bg-white flex-shrink-0 ${isCompactMode ? 'cv-compact-preview' : ''}`}>
+      <div className="w-full flex justify-center pb-24 px-2 lg:px-4 pt-2 print:p-0 print:block">
+        <div id="cv-print-area-wrapper" className={`w-[210mm] min-h-[297mm] transform scale-[0.45] sm:scale-[0.75] md:scale-[0.95] lg:scale-[0.60] xl:scale-[0.80] 2xl:scale-[0.95] origin-top shadow-2xl transition-all duration-500 rounded-lg overflow-hidden border border-slate-200 bg-white flex-shrink-0 print:transform-none print:shadow-none print:border-none print:m-0 print:w-[210mm] print:overflow-visible ${isCompactMode ? 'cv-compact-preview' : ''}`}>
           {templateId === 'modern' && <ModernTemplate />}
           {templateId === 'classic' && <ClassicTemplate />}
           {templateId === 'minimal' && <MinimalTemplate />}

@@ -80,28 +80,9 @@ body {
     background: white !important;
     margin: 0 !important;
     padding: 0 !important;
-    width: 210mm !important;
-    min-height: 297mm !important;
-  }
-
-  body > *:not(#cv-print-clone) {
-    display: none !important;
-  }
-
-  #cv-print-clone {
-    display: flex !important;
-    position: static !important;
-    width: calc(210mm / var(--print-scale, 1)) !important;
-    min-height: calc(297mm / var(--print-scale, 1)) !important;
-    margin: 0 !important;
-    box-shadow: none !important;
-    transform: none !important;
-    zoom: var(--print-scale, 1);
-  }
-
-  #cv-print-clone,
-  #cv-print-clone * {
-    visibility: visible !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     color-adjust: exact !important;
