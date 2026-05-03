@@ -57,14 +57,13 @@ export default function CVPreview() {
     const element = document.getElementById('cv-print-area');
     if (!element) return null;
 
-    // We create a wrapper to hold the clone and apply compact mode class if needed
+    // We create a temporary wrapper to measure pages
     const wrapper = document.createElement('div');
-    wrapper.style.position = 'fixed';
-    wrapper.style.left = '0';
+    wrapper.style.position = 'absolute';
+    wrapper.style.left = '-9999px';
     wrapper.style.top = '0';
-    wrapper.style.zIndex = '-9999';
     wrapper.style.width = '210mm';
-    wrapper.style.visibility = 'hidden'; // Hide during probe
+    wrapper.style.visibility = 'hidden';
 
     if (isCompactMode) {
       wrapper.classList.add('cv-compact-preview');
@@ -76,9 +75,9 @@ export default function CVPreview() {
     wrapper.appendChild(clone);
     document.body.appendChild(wrapper);
 
-    // Use a probe to accurately measure 1 A4 page height in the current DOM
+    // Use a probe to accurately measure 1 A4 page height
     const a4Probe = document.createElement('div');
-    a4Probe.style.position = 'fixed';
+    a4Probe.style.position = 'absolute';
     a4Probe.style.width = '210mm';
     a4Probe.style.height = '297mm';
     a4Probe.style.pointerEvents = 'none';
@@ -87,9 +86,11 @@ export default function CVPreview() {
 
     const rawPages = Math.max(1, Math.ceil(clone.scrollHeight / a4Probe.offsetHeight));
     
+    // Clean up measurement elements immediately
     document.body.removeChild(a4Probe);
+    document.body.removeChild(wrapper);
     
-    return { wrapper, clone, rawPages };
+    return { rawPages };
   };
 
   const handleDownloadPDF = async () => {
@@ -98,18 +99,16 @@ export default function CVPreview() {
       const prepared = checkPages();
       if (!prepared) return;
 
-      const { wrapper, clone, rawPages } = prepared;
+      const { rawPages } = prepared;
 
       // Check if it overflows and we are not in compact mode
       if (rawPages > 1 && !isCompactMode) {
-        document.body.removeChild(wrapper);
         setPageWarning({ pages: rawPages, scale: 1 });
         return;
       }
 
-      // Important: html2canvas needs the element to be visible to render it properly!
-      // We keep it off-screen (left: -10000px) but make it visible.
-      wrapper.style.visibility = 'visible';
+      const element = document.getElementById('cv-print-area');
+      if (!element) return;
 
       // Dynamically import html2pdf.js to avoid SSR issues
       const html2pdf = (await import('html2pdf.js')).default;
@@ -126,32 +125,14 @@ export default function CVPreview() {
           useCORS: true, 
           allowTaint: true,
           scrollY: 0,
-          windowWidth: 794,
+          windowWidth: 794, // A4 width in pixels
         },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
-      // Create PDF and get Blob to handle Android download securely
-      const pdfBlob = await html2pdf().set(opt).from(clone).output('blob');
-      
-      // Create a URL for the blob
-      const blobUrl = URL.createObjectURL(pdfBlob);
-      
-      // Create a temporary anchor element and trigger download
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      
-      // Clean up
-      setTimeout(() => {
-        document.body.removeChild(link);
-        URL.revokeObjectURL(blobUrl);
-      }, 100);
+      // html2pdf clones the element automatically and safely renders it
+      await html2pdf().set(opt).from(element).save();
 
-      // Clean up the DOM
-      document.body.removeChild(wrapper);
     } catch (error) {
       console.error('PDF Generation Error:', error);
     } finally {
