@@ -137,30 +137,30 @@ export default function CVPreview() {
           {t.livePreview}
         </h2>
         <div className="flex items-start justify-between gap-3">
-          <div className="flex-1 space-y-2">
-            <div className="flex flex-wrap items-center gap-1 bg-slate-100 p-1 rounded-lg w-fit">
-              {categories.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => setActiveCategory(category.id)}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${activeCategory === category.id ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+          <div className="flex-1">
+            <div className="flex flex-col gap-1.5 w-full max-w-[240px]">
+              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">{t.changeTemplate || 'Change Template'}</label>
+              <div className="relative">
+                <select
+                  value={templateId}
+                  onChange={(e) => setTemplateId(e.target.value)}
+                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 pr-8 text-sm font-bold text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm cursor-pointer appearance-none transition-all"
+                  dir={language === 'ar' ? 'rtl' : 'ltr'}
                 >
-                  {category.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Template Switcher */}
-            <div className="flex flex-wrap items-center gap-1 bg-slate-100 p-1 rounded-lg">
-              {visibleTemplates.map((template) => (
-                <button
-                  key={template.id}
-                  onClick={() => setTemplateId(template.id)}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${templateId === template.id ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
-                >
-                  {template.label}
-                </button>
-              ))}
+                  {categories.filter(c => c.id !== 'all').map(category => (
+                    <optgroup key={category.id} label={category.label}>
+                      {templates.filter(temp => temp.category === category.id).map(template => (
+                        <option key={template.id} value={template.id}>
+                          {template.label}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
+                <div className={`absolute inset-y-0 ${language === 'ar' ? 'left-0 pl-2' : 'right-0 pr-2'} flex items-center pointer-events-none`}>
+                  <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+              </div>
             </div>
           </div>
 

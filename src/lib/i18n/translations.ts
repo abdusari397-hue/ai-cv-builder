@@ -152,6 +152,7 @@ export const translations = {
     skillPrefix: "مهارة",
     startOver: "البدء من جديد",
     startOverConfirm: "هل أنت متأكد أنك تريد مسح جميع البيانات والبدء من جديد؟",
+    changeTemplate: "تغيير القالب",
   },
   nl: {
     appTitle: "Slimme CV Maker",
@@ -304,6 +305,7 @@ export const translations = {
     skillPrefix: "Vaardigheid",
     startOver: "Opnieuw Beginnen",
     startOverConfirm: "Weet je zeker dat je alle gegevens wilt wissen en opnieuw wilt beginnen?",
+    changeTemplate: "Sjabloon Wijzigen",
   }
 };
 
