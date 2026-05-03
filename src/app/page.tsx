@@ -177,8 +177,8 @@ export default function Home() {
         {/* Left Form Area */}
         <div id="form-area" className="w-full shrink-0 snap-center lg:w-1/2 h-full relative">
           {/* Mobile Swipe Indicator */}
-          <div className="lg:hidden absolute bottom-6 z-50 flex justify-center pointer-events-none w-full">
-            <a href="#preview-area" className="pointer-events-auto bg-slate-900/90 backdrop-blur text-white px-5 py-3 rounded-full text-sm font-bold flex items-center gap-2 shadow-2xl hover:bg-slate-800 transition-all animate-bounce cursor-pointer border border-slate-700/50">
+          <div className="lg:hidden absolute bottom-10 z-50 flex justify-center pointer-events-none w-full">
+            <a href="#preview-area" className="pointer-events-auto bg-slate-900/90 backdrop-blur text-white px-6 py-3.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-2xl hover:bg-slate-800 transition-all animate-bounce cursor-pointer border border-slate-700/50 shadow-slate-900/20">
               <span>{language === 'ar' ? 'انقر للمعاينة' : 'Click to preview'}</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={language === 'ar' ? 'rotate-180' : ''}><path d="m9 18 6-6-6-6"/></svg>
             </a>
@@ -391,14 +391,14 @@ export default function Home() {
       {/* Right Preview Area */}
       <div id="preview-area" className="w-full shrink-0 snap-center lg:w-1/2 h-full bg-slate-200 lg:bg-white border-s border-slate-200 relative">
           {/* Mobile Swipe Indicator (Back) */}
-          <div className="lg:hidden absolute bottom-6 z-50 flex justify-center pointer-events-none w-full">
-            <a href="#form-area" className="pointer-events-auto bg-indigo-600/90 hover:bg-indigo-700 backdrop-blur text-white px-5 py-3 rounded-full text-sm font-bold flex items-center gap-2 shadow-2xl cursor-pointer transition-all border border-indigo-500/50">
+          <div className="lg:hidden absolute bottom-10 z-50 flex justify-center pointer-events-none w-full">
+            <a href="#form-area" className="pointer-events-auto bg-indigo-600/90 hover:bg-indigo-700 backdrop-blur text-white px-6 py-3.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-2xl cursor-pointer transition-all border border-indigo-500/50 shadow-indigo-900/20">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={language === 'ar' ? '' : 'rotate-180'}><path d="m15 18-6-6 6-6"/></svg>
               <span>{language === 'ar' ? 'انقر للتعديل' : 'Click to edit'}</span>
             </a>
           </div>
 
-        <div className="w-full h-full overflow-y-auto pb-20 lg:pb-0 custom-scrollbar">
+        <div className="w-full h-full overflow-y-auto pb-32 lg:pb-10 custom-scrollbar">
           <CVPreview />
         </div>
       </div>
