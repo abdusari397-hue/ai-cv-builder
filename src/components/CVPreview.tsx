@@ -116,7 +116,7 @@ export default function CVPreview() {
       const cvLabel = language === 'nl' ? 'CV' : 'السيرة الذاتية';
       const filename = fullName ? `${fullName} - ${cvLabel}.pdf` : `${cvLabel}.pdf`;
 
-      const opt = {
+      const opt: any = {
         margin:       0,
         filename:     filename,
         image:        { type: 'jpeg', quality: 0.98 },
