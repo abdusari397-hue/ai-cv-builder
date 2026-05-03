@@ -219,21 +219,23 @@ export default function CVPreview() {
       </div>
       
       {/* Zoomed out wrapper for better fit */}
-      <div className={`w-[210mm] transform scale-[0.75] xl:scale-[0.85] origin-top shadow-2xl transition-all duration-500 rounded-lg overflow-hidden border border-slate-100 flex-shrink-0 ${isCompactMode ? 'cv-compact-preview' : ''}`}>
-        {templateId === 'modern' && <ModernTemplate />}
-        {templateId === 'classic' && <ClassicTemplate />}
-        {templateId === 'minimal' && <MinimalTemplate />}
-        {templateId === 'executive' && <ExecutiveTemplate />}
-        {templateId === 'creative' && <CreativeTemplate />}
-        {templateId === 'startup' && <StartupTemplate />}
-        {templateId === 'elegant' && <ElegantTemplate />}
-        {templateId === 'atsCompact' && <ATSCompactTemplate />}
-        {templateId === 'academic' && <AcademicTemplate />}
-        {templateId === 'techGrid' && <TechGridTemplate />}
-        {templateId === 'dutchClean' && <DutchCleanTemplate />}
-        {templateId === 'consultant' && <ConsultantTemplate />}
-        {templateId === 'portfolio' && <PortfolioTemplate />}
-        {templateId === 'engineer' && <EngineerTemplate />}
+      <div className="w-full flex justify-center pb-20">
+        <div className={`w-[210mm] min-h-[297mm] transform scale-[0.40] sm:scale-[0.7] md:scale-[0.9] lg:scale-[0.55] xl:scale-[0.75] 2xl:scale-[0.9] origin-top shadow-2xl transition-all duration-500 rounded-lg overflow-hidden border border-slate-200 bg-white flex-shrink-0 ${isCompactMode ? 'cv-compact-preview' : ''}`}>
+          {templateId === 'modern' && <ModernTemplate />}
+          {templateId === 'classic' && <ClassicTemplate />}
+          {templateId === 'minimal' && <MinimalTemplate />}
+          {templateId === 'executive' && <ExecutiveTemplate />}
+          {templateId === 'creative' && <CreativeTemplate />}
+          {templateId === 'startup' && <StartupTemplate />}
+          {templateId === 'elegant' && <ElegantTemplate />}
+          {templateId === 'atsCompact' && <ATSCompactTemplate />}
+          {templateId === 'academic' && <AcademicTemplate />}
+          {templateId === 'techGrid' && <TechGridTemplate />}
+          {templateId === 'dutchClean' && <DutchCleanTemplate />}
+          {templateId === 'consultant' && <ConsultantTemplate />}
+          {templateId === 'portfolio' && <PortfolioTemplate />}
+          {templateId === 'engineer' && <EngineerTemplate />}
+        </div>
       </div>
     </div>
   );
