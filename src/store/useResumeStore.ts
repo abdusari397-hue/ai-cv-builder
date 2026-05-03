@@ -100,7 +100,10 @@ interface ResumeState {
 
   isCompactMode: boolean;
   setIsCompactMode: (enabled: boolean) => void;
+
+  resetData: () => void;
 }
+
 
 export const useResumeStore = create<ResumeState>()(
   persist(
@@ -217,6 +220,28 @@ export const useResumeStore = create<ResumeState>()(
 
       isCompactMode: false,
       setIsCompactMode: (isCompactMode) => set({ isCompactMode }),
+
+      resetData: () => {
+        set({
+          fullName: '',
+          email: '',
+          phone: '',
+          location: '',
+          houseNumber: '',
+          profilePhoto: '',
+          linkedIn: '',
+          github: '',
+          portfolio: '',
+          jobTitle: '',
+          summary: '',
+          postalCode: '',
+          experiences: [{ id: Date.now().toString(), company: '', position: '', startDate: '', endDate: '', description: '' }],
+          educations: [{ id: Date.now().toString(), institution: '', degree: '', year: '' }],
+          skills: [],
+          spokenLanguages: [],
+          jobDescription: '',
+        });
+      },
     }),
     {
       name: 'cv-builder-storage',

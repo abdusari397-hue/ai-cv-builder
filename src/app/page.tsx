@@ -14,7 +14,7 @@ import CVReviewModal from '@/components/CVReviewModal';
 import LanguagesField from '@/components/LanguagesField';
 import JobDescriptionField from '@/components/JobDescriptionField';
 import ATSAnalysisModal from '@/components/ATSAnalysisModal';
-import { Sparkles, FileText, Briefcase, UserCircle, GraduationCap, Wrench, User, Globe, Loader2, ShieldCheck, Target } from 'lucide-react';
+import { Sparkles, FileText, Briefcase, UserCircle, GraduationCap, Wrench, User, Globe, Loader2, ShieldCheck, Target, Trash2 } from 'lucide-react';
 import { getTranslation, Language } from '@/lib/i18n/translations';
 
 export default function Home() {
@@ -29,7 +29,7 @@ export default function Home() {
   const {
     jobTitle, setJobTitle, language, setLanguage, fullName,
     summary, setSummary, experiences, educations, skills,
-    updateExperience, updateEducation, jobDescription
+    updateExperience, updateEducation, jobDescription, resetData
   } = useResumeStore();
   const { percentage } = useCVCompletion();
   const t = getTranslation(language);
@@ -154,6 +154,13 @@ export default function Home() {
     }
   };
 
+  const handleStartOver = () => {
+    if (window.confirm(t.startOverConfirm)) {
+      resetData();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   // تفعيل الاستماع لتغيرات المسمى الوظيفي وجلب الأمثلة الديناميكية
   useDynamicPlaceholders();
 
@@ -173,21 +180,33 @@ export default function Home() {
               <Sparkles className="text-indigo-600" size={32} />
             </div>
 
-            {/* Language Switcher */}
-            <div className="flex items-center bg-white border border-slate-200 rounded-lg p-1 shadow-sm">
-              <Globe size={16} className="text-slate-400 mx-2" />
+            {/* Action Buttons */}
+            <div className="flex items-center gap-3">
+              {/* Start Over Button */}
               <button
-                onClick={() => setLanguage('ar')}
-                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${language === 'ar' ? 'bg-indigo-100 text-indigo-700' : 'text-slate-500 hover:bg-slate-100'}`}
+                onClick={handleStartOver}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-sm font-bold transition-colors shadow-sm border border-red-100"
               >
-                العربية
+                <Trash2 size={16} />
+                <span className="hidden sm:inline">{t.startOver}</span>
               </button>
-              <button
-                onClick={() => setLanguage('nl')}
-                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${language === 'nl' ? 'bg-indigo-100 text-indigo-700' : 'text-slate-500 hover:bg-slate-100'}`}
-              >
-                Nederlands
-              </button>
+
+              {/* Language Switcher */}
+              <div className="flex items-center bg-white border border-slate-200 rounded-lg p-1 shadow-sm">
+                <Globe size={16} className="text-slate-400 mx-2" />
+                <button
+                  onClick={() => setLanguage('ar')}
+                  className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${language === 'ar' ? 'bg-indigo-100 text-indigo-700' : 'text-slate-500 hover:bg-slate-100'}`}
+                >
+                  العربية
+                </button>
+                <button
+                  onClick={() => setLanguage('nl')}
+                  className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${language === 'nl' ? 'bg-indigo-100 text-indigo-700' : 'text-slate-500 hover:bg-slate-100'}`}
+                >
+                  Nederlands
+                </button>
+              </div>
             </div>
           </div>
 

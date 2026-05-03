@@ -149,7 +149,9 @@ export const translations = {
     dismissWarning: "تجاهل",
     linksSection: "الروابط",
     engineerTagline: "تصميم / بناء / تحسين",
-    skillPrefix: "مهارة"
+    skillPrefix: "مهارة",
+    startOver: "البدء من جديد",
+    startOverConfirm: "هل أنت متأكد أنك تريد مسح جميع البيانات والبدء من جديد؟",
   },
   nl: {
     appTitle: "Slimme CV Maker",
@@ -299,7 +301,9 @@ export const translations = {
     dismissWarning: "Negeren",
     linksSection: "Links",
     engineerTagline: "Ontwerpen / bouwen / verbeteren",
-    skillPrefix: "Vaardigheid"
+    skillPrefix: "Vaardigheid",
+    startOver: "Opnieuw Beginnen",
+    startOverConfirm: "Weet je zeker dat je alle gegevens wilt wissen en opnieuw wilt beginnen?",
   }
 };
 
